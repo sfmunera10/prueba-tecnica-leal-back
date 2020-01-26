@@ -2,6 +2,9 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 var models = require('../database/models/index');
+const config = require('./authConfig.json');
+const jwt = require('jsonwebtoken');
+
 const port = process.argv.slice(2)[0];
 const app = express();
 app.use(bodyParser.json());
@@ -32,17 +35,15 @@ const threats = [
   }
 ];
 
-app.post('users/register',(req, res, next) => {
+app.post('users/login',(req, res, next) => {
   console.log('Logging in...');
-  const {name,lastName,birth_date,email,password} = req.body;
-  model.ABCTransaction.create({
-    user_id: "asdasdasdqweqwe123123",
-    created_date: new Date(),
-    name: name,
-    lastName: lastName,
-    birth_date: birth_date,
-    email: email,
-    password: password
+  const {email,password} = req.body;
+  model.ABCTransaction.findOne({
+    where: {
+        email: email,
+        password: password
+    },
+    attributes: ['name','lastname'],
   })
   .then(abcTransaction => res.status(201).send(abcTransaction))
   .catch(error => res.json({
