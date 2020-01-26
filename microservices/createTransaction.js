@@ -1,8 +1,9 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-var models = require('../database/models/index');
-
+const models = require('../database/models/index');
+const Joi = require('joi');
+const authMiddleware = require('../middleware/auth');
 const port = process.argv.slice(2)[0];
 const app = express();
 app.use(bodyParser.json());
@@ -33,14 +34,25 @@ const threats = [
   }
 ];
 
-app.post('/transactions/create',(req, res) => {
+function validateTransaction(user) {
+    const schema = {
+        value: Joi.number().min(0).required(),
+        points: Joi.number().min(0).required()
+    };
+    return Joi.validate(user, schema);
+}
+
+app.post('/transactions/create',authMiddleware.ensureAuthenticated,(req, res) => {
+  const { error } = validateTransaction(req.body);
   console.log('Creating a transaction for the user...');
-  const {user_id,created_date,value,points,status} = req.body;
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
   models.ABCTransaction.create({
-    user_id: "asdasdasdqweqwe123123",
+    user_id: req.user,
     created_date: new Date(),
-    value: value,
-    points: points,
+    value: req.body.value,
+    points: req.body.points,
     status:1
   })
   .then(abcTransaction => res.status(201).send(abcTransaction))

@@ -1,10 +1,10 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-var models = require('../database/models/index');
-const config = require('./authConfig.json');
-const jwt = require('jsonwebtoken');
-
+const models = require('../database/models/index');
+const tokenMiddleware = require('../middleware/tokenGen');
+const Joi = require('joi');
+const bcrypt = require('bcryptjs');
 const port = process.argv.slice(2)[0];
 const app = express();
 app.use(bodyParser.json());
@@ -35,17 +35,39 @@ const threats = [
   }
 ];
 
+function validateUser(user) {
+    const schema = {
+        email:Joi.string().min(5).max(255).required().email(),
+        password:Joi.string().min(5).max(255).required()
+    };
+    return Joi.validate(user, schema);
+}
+
 app.post('/users/login',(req, res, next) => {
-  console.log('Logging in...');
-  const {email,password} = req.body;
+  const { error } = validateUser(req.body);
+  console.log('Sign in now');
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
+  // Check if this user already exists
   models.ABCUser.findOne({
     where: {
-        email: email,
-        password: password
+      email: req.body.email
     },
-    attributes: ['name','lastname']
+    attributes: ['user_id','email','password']
   })
-  .then(abcTransaction => res.status(201).send(abcTransaction))
+  .then(user => {
+    if (!user) {
+        return res.status(400).send('This account does not exist: Incorrect email or password.');
+    } else {
+      //Check if password is correct
+      let correctPass = bcrypt.compareSync(req.body.password, user.password);
+      if (!correctPass) {
+        return res.status(400).send('Incorrect email or password.');
+      }
+      res.send({token: tokenMiddleware.createToken(user)});
+    }
+  })
   .catch(error => res.json({
     error: true,
     data: [],
