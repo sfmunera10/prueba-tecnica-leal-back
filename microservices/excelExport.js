@@ -47,8 +47,7 @@ app.get('/transactions/excel-export/:user_id',(req, res) => {
       }]
     })
     .then(abcUsers => {
-      let info = abcUsers.toJSON().ABCTransactions;
-      console.log(info);
+      let info = abcUsers.toJSON();
       var workbook = new Excel.Workbook();
       workbook.creator = 'Me';
       workbook.lastModifiedBy = 'Me';
@@ -61,17 +60,29 @@ app.get('/transactions/excel-export/:user_id',(req, res) => {
           x: 0, y: 0, width: 10000, height: 20000,
           firstSheet: 0, activeTab: 1, visibility: 'visible'
         }
-      ];
+      ];  
       var worksheet = workbook.addWorksheet('My Sheet');
       worksheet.columns = [
-          { header: 'Id', key: 'id', width: 10 },
-          { header: 'Name', key: 'name', width: 32 },
-          { header: 'D.O.B.', key: 'dob', width: 10, outlineLevel: 1, type: 'date', formulae: [new Date(2016, 0, 1)] }
+          { header: 'Name', key: 'name', width: 15 },
+          { header: 'Lastname', key: 'lastname', width: 32 },
+          { header: 'Birth date', key: 'birthdate', width: 15, outlineLevel: 1, type: 'date', formulae: [new Date(2016, 0, 1)] },
+          { header: 'Email', key: 'email', width: 32},
+          { header: 'Transaction_id', key: 'transactionid', width: 15},
+          { header: 'Created At', key: 'createdat', width: 15, outlineLevel: 1, type: 'date', formulae: [new Date(2016, 0, 1,[12,7,3,5])] },
+          { header: 'Value', key: 'value', width: 15},
+          { header: 'Points', key: 'points', width: 15},
+          { header: 'Status', key: 'status', width: 15}
       ];
-      worksheet.addRow({ id: 1, name: 'John Doe', dob: new Date(1970, 1, 1) });
-      worksheet.addRow({ id: 2, name: 'Jane Doe', dob: new Date(1965, 1, 7) });
+      worksheet.addRow({name:info.name,lastname:info.lastname,birthdate:info.birth_date,email:info.email,
+      transactionid:info.ABCTransactions[0].transaction_id,createdat:info.ABCTransactions[0].created_date,
+      value:info.ABCTransactions[0].value,points:info.ABCTransactions[0].points,status:info.ABCTransactions[0].points});
+      for(let i = 1; i<info.ABCTransactions.length; i++){
+        worksheet.addRow({name:'',lastname:'',birthdate:'',email:'',
+        transactionid:info.ABCTransactions[i].transaction_id,createdat:info.ABCTransactions[i].created_date,
+        value:info.ABCTransactions[i].value,points:info.ABCTransactions[i].points,status:info.ABCTransactions[i].points});
+      }
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-      res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+      res.setHeader("Content-Disposition", "attachment; filename=" + "Report-"+info.name+".xlsx");
       workbook.xlsx.write(res)
           .then(function (data) {
               res.end();
