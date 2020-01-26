@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-var models = require('../database/models/index');
-
+const models = require('../database/models/index');
+const Excel = require('exceljs');
 const port = process.argv.slice(2)[0];
 const app = express();
 app.use(bodyParser.json());
@@ -46,7 +46,38 @@ app.get('/transactions/excel-export/:user_id',(req, res) => {
         attributes: ['transaction_id','created_date','value','points','status']
       }]
     })
-    .then(abcUsers => res.send(abcUsers))
+    .then(abcUsers => {
+      let info = abcUsers.toJSON().ABCTransactions;
+      console.log(info);
+      var workbook = new Excel.Workbook();
+      workbook.creator = 'Me';
+      workbook.lastModifiedBy = 'Me';
+      workbook.created = new Date();
+      workbook.modified = new Date();
+      workbook.lastPrinted = new Date();
+      workbook.properties.date1904 = true;
+      workbook.views = [
+        {
+          x: 0, y: 0, width: 10000, height: 20000,
+          firstSheet: 0, activeTab: 1, visibility: 'visible'
+        }
+      ];
+      var worksheet = workbook.addWorksheet('My Sheet');
+      worksheet.columns = [
+          { header: 'Id', key: 'id', width: 10 },
+          { header: 'Name', key: 'name', width: 32 },
+          { header: 'D.O.B.', key: 'dob', width: 10, outlineLevel: 1, type: 'date', formulae: [new Date(2016, 0, 1)] }
+      ];
+      worksheet.addRow({ id: 1, name: 'John Doe', dob: new Date(1970, 1, 1) });
+      worksheet.addRow({ id: 2, name: 'Jane Doe', dob: new Date(1965, 1, 7) });
+      res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+      res.setHeader("Content-Disposition", "attachment; filename=" + "Report.xlsx");
+      workbook.xlsx.write(res)
+          .then(function (data) {
+              res.end();
+              console.log('File write done........');
+          });
+      })
     .catch(error => res.json({
       error: true,
       data: [],
