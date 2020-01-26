@@ -1,7 +1,10 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-var models = require('../database/models/index');
+const md5 = require('md5');
+const bcrypt = require('bcryptjs');
+const models = require('../database/models/index');
+const Joi = require('joi');
 const port = process.argv.slice(2)[0];
 const app = express();
 app.use(bodyParser.json());
@@ -32,19 +35,55 @@ const threats = [
   }
 ];
 
-app.post('users/register',(req, res, next) => {
-  console.log('Logging in...');
-  const {name,lastName,birth_date,email,password} = req.body;
-  model.ABCTransaction.create({
-    user_id: "asdasdasdqweqwe123123",
-    created_date: new Date(),
-    name: name,
-    lastName: lastName,
-    birth_date: birth_date,
-    email: email,
-    password: password
+function validateUser(user) {
+    const schema = {
+        name:Joi.string().min(5).max(50).required(),
+        lastname:Joi.string().min(5).max(50).required(),
+        birth_date:Joi.date().required(),
+        email:Joi.string().min(5).max(255).required().email(),
+        password:Joi.string().min(5).max(255).required()
+    };
+    return Joi.validate(user, schema);
+}
+
+app.post('/users/register',(req, res, next) => {
+  const { error } = validateUser(req.body);
+  console.log('Register now');
+  if (error) {
+    return res.status(400).send(error.details[0].message);
+  }
+  // Check if this user already exists
+  models.ABCUser.findOne({
+    where: {
+      email: req.body.email
+    },
+    attributes: ['email']
   })
-  .then(abcTransaction => res.status(201).send(abcTransaction))
+  .then(user => {
+    if (user) {
+        return res.status(400).send('The user with email: ' + req.body.email + ' already exists. Try with another email.');
+    } else {
+      // Insert the new user if they do not exist yet
+      let salt = bcrypt.genSaltSync(10);
+      let hash = bcrypt.hashSync(req.body.password, salt);
+      models.ABCUser.create({
+        user_id: md5(req.body.email),
+        created_date: new Date(),
+        name: req.body.name,
+        lastname: req.body.lastname,
+        birth_date: req.body.birth_date,
+        email: req.body.email,
+        password: hash
+      })
+      .then(abcUser => res.status(201).send(abcUser))
+      .catch(error => 
+          res.json({
+          error: true,
+          data: [],
+          error: error
+      }));
+    }
+  })
   .catch(error => res.json({
     error: true,
     data: [],

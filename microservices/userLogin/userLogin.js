@@ -35,15 +35,15 @@ const threats = [
   }
 ];
 
-app.post('users/login',(req, res, next) => {
+app.post('/users/login',(req, res, next) => {
   console.log('Logging in...');
   const {email,password} = req.body;
-  model.ABCTransaction.findOne({
+  models.ABCUser.findOne({
     where: {
         email: email,
         password: password
     },
-    attributes: ['name','lastname'],
+    attributes: ['name','lastname']
   })
   .then(abcTransaction => res.status(201).send(abcTransaction))
   .catch(error => res.json({

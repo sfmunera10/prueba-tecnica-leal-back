@@ -33,10 +33,10 @@ const threats = [
   }
 ];
 
-app.post('transactions/create',(req, res) => {
+app.post('/transactions/create',(req, res) => {
   console.log('Creating a transaction for the user...');
   const {user_id,created_date,value,points,status} = req.body;
-  model.ABCTransaction.create({
+  models.ABCTransaction.create({
     user_id: "asdasdasdqweqwe123123",
     created_date: new Date(),
     value: value,

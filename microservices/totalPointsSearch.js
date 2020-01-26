@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-var model = require('../database/models/index');
+var models = require('../database/models/index');
 
 const port = process.argv.slice(2)[0];
 const app = express();
@@ -36,7 +36,7 @@ const threats = [
 app.get('/transactions/points/:user_id',(req, res) => {
   console.log('Returning total points from active transactions made by the user...');
     const abcuser_id = req.params.user_id;
-    model.ABCTransaction.findAll({
+    models.ABCTransaction.findAll({
       attributes: ['transaction_id','created_date','value','points','status'],
       where: {
         user_id: abcuser_id 

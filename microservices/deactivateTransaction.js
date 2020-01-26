@@ -33,9 +33,9 @@ const threats = [
   }
 ];
 
-app.put('transactions/deactivate',(req, res) => {
+app.put('/transactions/deactivate',(req, res) => {
   console.log('Creating a transaction for the user...');
-  model.ABCTransaction.update({
+  models.ABCTransaction.update({
     status:1
   },{
     where:{

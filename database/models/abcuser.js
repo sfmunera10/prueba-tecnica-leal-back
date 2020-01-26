@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
     birth_date: DataTypes.DATE,
     email: DataTypes.STRING,
     password: DataTypes.STRING
-  }, {});
+  }, {timestamps: false});
   ABCUser.associate = function(models) {
     // associations can be defined here
     ABCUser.hasMany(models.ABCTransaction, {

@@ -9,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
     value: DataTypes.FLOAT,
     points: DataTypes.INTEGER,
     status: DataTypes.INTEGER
-  }, {});
+  }, {timestamps: false});
   ABCTransaction.associate = function(models) {
     // associations can be defined here
     ABCTransaction.belongsTo(models.ABCUser,{
