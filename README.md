@@ -4,13 +4,13 @@
 **Santiago Felipe Múnera Dávila**: https://sfmunera10.github.io/
 
 ## Contenido
-- [Descripción general](#descripcion-general)
-- [Configuración de la base de datos](#configuracion-de-la-base-de-datos)
-- [Ejecución de la aplicación](#ejecucion-de-la-aplicacion)
+- [Enunciado](#enunciado)
+- [BD-MySQL](#bd-mysql)
+- [Ejecutar](#ejecutar)
 - [Pruebas](#pruebas)
 - [Licencia](#licencia)
 
-## Descripción general
+## Enunciado
 Esta es una prueba para desarrollador backend que requiere construir una solución orientada a microservicios en NodeJS, que permita manejar datos de transacciones y usuarios a una empresa (ABC). Los microservicios desarrollados son:
 
 - Registro de usuario
@@ -21,9 +21,9 @@ Esta es una prueba para desarrollador backend que requiere construir una soluci�
 - Crear transacción
 - Inactivar transacción
 
-## Configuración de la base de datos
+## BD-MySQL
 
-## Ejecución de la aplicación
+## Ejecutar
 - ```npm install``` to install node modules in the project folder
 - ```npm start``` to deploy the local server
 
