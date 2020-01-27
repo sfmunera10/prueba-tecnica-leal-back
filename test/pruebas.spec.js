@@ -1,7 +1,13 @@
-let chai = require('chai');
-let chaiHttp = require('chai-http');
-let server = require('../bin/www');
-let should = chai.should();
+const chai = require('chai');
+const chaiHttp = require('chai-http');
+const createTransactionMicroService = require('../microservices/createTransaction');
+const deactivateTransactionMicroService = require('../microservices/deactivateTransaction');
+const excelExportMicroService = require('../microservices/excelExport');
+const totalPointsSearchMicroService = require('../microservices/totalPointsSearch');
+const transactionHistoryMicroService = require('../microservices/transactionHistory');
+const userLoginMicroService = require('../microservices/userLogin');
+const userRegisterMicroService = require('../microservices/userRegister');
+const should = chai.should();
 let resourceId = 0;
 chai.use(chaiHttp);
 
