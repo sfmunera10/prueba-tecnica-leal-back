@@ -1,0 +1,290 @@
+{
+	"info": {
+		"_postman_id": "debe94de-816f-47aa-a9af-edcc444ab096",
+		"name": "abcCollection",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "localhost:8083/users/login",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"email\": \"123@123.com\",\r\n        \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8083/users/login",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"users",
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/users/register",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"name\": \"name1\",\r\n        \"lastname\": \"lastname1\",\r\n        \"email\": \"123@123.com\",\r\n        \"birth_date\": \"2018-03-29\",\r\n        \"password\": \"password\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8083/users/register",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"users",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/transactions/excel-export",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiI1ZjZhZjdjZTRmNWY0YmIxNTdlODY0ZmM4MWIxMjAxMCIsImlhdCI6MTU4MDA3OTQ1MCwiZXhwIjoxNTgwMjUyMjUwfQ.U7iHWNEmI7Nw65R2U0UDvWDAAJ2ACJ4IpAe8Qd_ayl8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8083/transactions/excel-export",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"transactions",
+						"excel-export"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/transactions/points",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiI1ZjZhZjdjZTRmNWY0YmIxNTdlODY0ZmM4MWIxMjAxMCIsImlhdCI6MTU4MDA3OTQ1MCwiZXhwIjoxNTgwMjUyMjUwfQ.U7iHWNEmI7Nw65R2U0UDvWDAAJ2ACJ4IpAe8Qd_ayl8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8083/transactions/points",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"transactions",
+						"points"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/transactions/history",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiI1ZjZhZjdjZTRmNWY0YmIxNTdlODY0ZmM4MWIxMjAxMCIsImlhdCI6MTU4MDA3OTQ1MCwiZXhwIjoxNTgwMjUyMjUwfQ.U7iHWNEmI7Nw65R2U0UDvWDAAJ2ACJ4IpAe8Qd_ayl8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8083/transactions/history",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"transactions",
+						"history"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/transactions/deactivate/4",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiI1ZjZhZjdjZTRmNWY0YmIxNTdlODY0ZmM4MWIxMjAxMCIsImlhdCI6MTU4MDA3OTQ1MCwiZXhwIjoxNTgwMjUyMjUwfQ.U7iHWNEmI7Nw65R2U0UDvWDAAJ2ACJ4IpAe8Qd_ayl8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8083/transactions/deactivate/4",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"transactions",
+						"deactivate",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8083/transactions/create",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					},
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1aWQiOiI1ZjZhZjdjZTRmNWY0YmIxNTdlODY0ZmM4MWIxMjAxMCIsImlhdCI6MTU4MDA3OTQ1MCwiZXhwIjoxNTgwMjUyMjUwfQ.U7iHWNEmI7Nw65R2U0UDvWDAAJ2ACJ4IpAe8Qd_ayl8",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n        \"value\": 12.3,\r\n        \"points\": 12\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8083/transactions/create",
+					"host": [
+						"localhost"
+					],
+					"port": "8083",
+					"path": [
+						"transactions",
+						"create"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
