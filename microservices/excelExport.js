@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
 const models = require('../database/models/index');
+const authMiddleware = require('../middleware/auth');
 const Excel = require('exceljs');
 const port = process.argv.slice(2)[0];
 const app = express();
@@ -33,12 +34,11 @@ const threats = [
   }
 ];
 
-app.get('/transactions/excel-export/:user_id',(req, res) => {
+app.get('/transactions/excel-export',authMiddleware.ensureAuthenticated,(req, res) => {
   console.log('Exporting excel sheet with the relevant transaction info from the user...');
-  const abcuserid = req.params.user_id;
   models.ABCUser.findOne({
       where: {
-        user_id: abcuserid
+        user_id: req.user
       },
       attributes: ['name','lastname','birth_date','email'],
       include: [{
@@ -75,11 +75,11 @@ app.get('/transactions/excel-export/:user_id',(req, res) => {
       ];
       worksheet.addRow({name:info.name,lastname:info.lastname,birthdate:info.birth_date,email:info.email,
       transactionid:info.ABCTransactions[0].transaction_id,createdat:info.ABCTransactions[0].created_date,
-      value:info.ABCTransactions[0].value,points:info.ABCTransactions[0].points,status:info.ABCTransactions[0].points});
+      value:info.ABCTransactions[0].value,points:info.ABCTransactions[0].points,status:info.ABCTransactions[0].status});
       for(let i = 1; i<info.ABCTransactions.length; i++){
         worksheet.addRow({name:'',lastname:'',birthdate:'',email:'',
         transactionid:info.ABCTransactions[i].transaction_id,createdat:info.ABCTransactions[i].created_date,
-        value:info.ABCTransactions[i].value,points:info.ABCTransactions[i].points,status:info.ABCTransactions[i].points});
+        value:info.ABCTransactions[i].value,points:info.ABCTransactions[i].points,status:info.ABCTransactions[i].status});
       }
       res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
       res.setHeader("Content-Disposition", "attachment; filename=" + "Report-"+info.name+".xlsx");

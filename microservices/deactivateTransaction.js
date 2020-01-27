@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-var models = require('../database/models/index');
-
+const models = require('../database/models/index');
+const authMiddleware = require('../middleware/auth');
 const port = process.argv.slice(2)[0];
 const app = express();
 app.use(bodyParser.json());
@@ -33,21 +33,33 @@ const threats = [
   }
 ];
 
-app.put('/transactions/deactivate',(req, res) => {
-  console.log('Creating a transaction for the user...');
+app.put('/transactions/deactivate/:transaction_id',authMiddleware.ensureAuthenticated,(req, res) => {
+  console.log('Deactivating the specified transaction for the user...');
+  const abctransaction_id = req.params.transaction_id;
   models.ABCTransaction.update({
-    status:1
-  },{
+      status:0
+    },{
     where:{
-      id: abcTransaction_id
+      transaction_id: abctransaction_id,
+      user_id: req.user,
+      status:1
+    },
+    returning: true,
+    plain: true
+  }).then(abcTransaction => {
+    if(abcTransaction[1] == 0){
+      res.status(400).send('This transaction does not exist or is already deactivated.');
+    }else{
+      res.status(201).send('The transaction with id: ' + abctransaction_id + ' was successfully deactivated.');
     }
   })
-  .then(abcTransaction => res.status(201).send(abcTransaction))
-  .catch(error => res.json({
+  .catch(error =>{
+    res.json({
     error: true,
     data: [],
     error: error
-  }));
+    })
+  });
 });
 
 //Manage CORS

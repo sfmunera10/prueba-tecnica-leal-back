@@ -1,8 +1,8 @@
 const express = require('express');
 const path = require('path');
 const bodyParser = require('body-parser');
-var models = require('../database/models/index');
-
+const models = require('../database/models/index');
+const authMiddleware = require('../middleware/auth');
 const port = process.argv.slice(2)[0];
 const app = express();
 app.use(bodyParser.json());
@@ -50,14 +50,14 @@ const heroes = [
   }
 ];
 
-app.get('/transactions/history/:user_id',(req, res) => {
+app.get('/transactions/history',authMiddleware.ensureAuthenticated,(req, res) => {
   console.log('Returning transaction history made by the user...');
-    const abcuser_id = req.params.user_id;
     models.ABCTransaction.findAll({
       attributes: ['transaction_id','created_date','value','points','status'],
+      order:[['created_date','DESC']],
       where: {
-        user_id: abcuser_id 
-      }
+        user_id: req.user
+      },raw: true
       })
       .then(abcTransactions => res.send(abcTransactions))
       .catch(error => res.json({
