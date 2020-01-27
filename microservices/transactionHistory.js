@@ -16,7 +16,7 @@ app.get('/transactions/history',authMiddleware.ensureAuthenticated,(req, res) =>
         user_id: req.user
       },raw: true
       })
-      .then(abcTransactions => res.send(abcTransactions))
+      .then(abcTransactions => res.status(200).send(abcTransactions))
       .catch(error => res.json({
         error: true,
         data: [],
@@ -51,3 +51,5 @@ app.use(function(err, req, res, next) {
 
 console.log(`Transaction History service listening on port ${port}`);
 app.listen(port);
+
+module.exports = app;

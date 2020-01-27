@@ -39,7 +39,7 @@ app.post('/users/login',(req, res, next) => {
       if (!correctPass) {
         return res.status(400).send('Incorrect email or password.');
       }
-      res.send({token: tokenMiddleware.createToken(user)});
+      res.status(201).send({token: tokenMiddleware.createToken(user)});
     }
   })
   .catch(error => res.json({
@@ -75,3 +75,5 @@ app.use(function(err, req, res, next) {
 
 console.log(`Login service listening on port ${port}`);
 app.listen(port);
+
+module.exports = app;

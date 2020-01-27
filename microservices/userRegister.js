@@ -91,3 +91,5 @@ app.use(function(err, req, res, next) {
 
 console.log(`Register service listening on port ${port}`);
 app.listen(port);
+
+module.exports = app;

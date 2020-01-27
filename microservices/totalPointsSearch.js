@@ -21,7 +21,7 @@ app.get('/transactions/points',authMiddleware.ensureAuthenticated,(req, res) => 
         for(let i of abcTransactions){
           total += i.points;
         }
-        res.send('The total sum for each active transaction is: ' + total);
+        res.status(200).send('The total sum for each active transaction is: ' + total);
       })
       .catch(error => res.json({
         error: true,
@@ -57,3 +57,5 @@ app.use(function(err, req, res, next) {
 
 console.log(`Points service listening on port ${port}`);
 app.listen(port);
+
+module.exports = app;

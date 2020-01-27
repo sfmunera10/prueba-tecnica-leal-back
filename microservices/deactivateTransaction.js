@@ -62,3 +62,5 @@ app.use(function(err, req, res, next) {
 
 console.log(`Deactivate Transaction service listening on port ${port}`);
 app.listen(port);
+
+module.exports = app;
