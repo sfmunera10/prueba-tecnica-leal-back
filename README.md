@@ -47,6 +47,8 @@ Con el fin de mantener la independencia de los microservicios, ejecute cada uno 
 Puede ejecutar pruebas con Mocha y chai ubicadas en el archivo pruebas.spec.js de la carpeta test, si ejecuta el siguiente comando en una terminal aparte de los microservicios:
 - ```npm test```
 
+**Importante:** en las pruebas que requieren autenticación, debe cambiar el tomen jwt en la línea 'set' de la prueba, ya que el token por defecto puede expirar y resultar en prueba fallida.
+
 Adicionalmente, se adjunta una colección de pruebas en postman para guiarlo sobre como realizar las peticiones a cada uno de los microservicios. **Cabe resaltar que cada prueba de postman se realiza sobre el mismo puerto, ya que se ejecutaba un sólo microservicio a la vez.**
 
 ## JWT
